@@ -8,15 +8,23 @@ export default class AppointmentForm extends React.Component {
     }
 
     handleSubmit(e) {
-
+        e.preventDefault()
+        this.props.onFormSubmit()
     }
 
     setApptTime (e) {
-
+        const name = 'appt_time'
+        const obj = {}
+        if (obj[name] = e.toDate()) {
+            this.props.onUserInput(obj)
+        }
     }
 
     handleChange (e) {
-
+        const name = e.target.name
+        const obj = {}
+        obj[name] = e.target.value
+        this.props.onUserInput(obj)
     }
 
     render() {
