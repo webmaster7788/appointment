@@ -1,22 +1,31 @@
-import React from 'react'
+import React, {Component} from 'react'
+import {connect} from 'react-redux'
+import {Link} from 'react-router'
 import Datetime from 'react-datetime'
 import 'react-datetime/css/react-datetime'
+import {createAppointment} from '../actions/appointmentActions'
 
-export default class AppointmentForm extends React.Component {
+class AppointmentForm extends Component {
     constructor(props) {
         super(props)
+        this.state = {
+            title: 'Team standup meeting',
+            appt_time: '25 January 2016 9am'
+        }
     }
 
     handleSubmit(e) {
         e.preventDefault()
-        this.props.onFormSubmit()
+        const appointment = {title: this.state.title, appt_time: this.state.appt_time};
+        console.log(appointment)
+        this.props.dispatch(createAppointment(appointment))
     }
 
     setApptTime (e) {
         const name = 'appt_time'
         const obj = {}
         if (obj[name] = e.toDate()) {
-            this.props.onUserInput(obj)
+            this.setState(obj);
         }
     }
 
@@ -24,7 +33,7 @@ export default class AppointmentForm extends React.Component {
         const name = e.target.name
         const obj = {}
         obj[name] = e.target.value
-        this.props.onUserInput(obj)
+        this.setState(obj);
     }
 
     render() {
@@ -37,11 +46,9 @@ export default class AppointmentForm extends React.Component {
                 <h2>Make a new appointment</h2>
                 <form onSubmit={(event) => this.handleSubmit(event)}>
                     <input name='title' placeholder='Appointment Title'
-                           value={this.props.input_title}
+                           value={this.state.title}
                            onChange={(event) => this.handleChange(event)} />
-
                     <Datetime input={false} open={true} inputProps={inputProps}
-                              value={this.props.appt_time}
                               onChange={(event) => this.setApptTime(event)} />
 
                     <input type='submit' value='Make Appointment' className='submit-button' />
@@ -50,3 +57,11 @@ export default class AppointmentForm extends React.Component {
         )
     }
 }
+
+const mapStateToProps = (state) => ({
+
+})
+
+AppointmentForm = connect(mapStateToProps)(AppointmentForm)
+
+export default AppointmentForm
